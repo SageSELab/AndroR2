@@ -99,6 +99,8 @@ public class Script18 {
         uiDevice.findObject(new UiSelector().clickable(true).instance(9)).click();
         // Press "DENY" button
         uiDevice.findObject(new UiSelector().clickable(true)).click();
+        // Press text box
+        uiDevice.findObject(new UiSelector().clickable(true).instance(1)).click();
         // Enter "test" in text box
         uiDevice.findObject(new UiSelector().clickable(true).instance(1)).setText(STRING_TO_TYPE);
         // Press "Add to the med kit" button

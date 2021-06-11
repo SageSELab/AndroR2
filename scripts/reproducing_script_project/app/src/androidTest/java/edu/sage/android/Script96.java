@@ -24,12 +24,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.RemoteException;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.Direction;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObject2;
@@ -85,23 +87,51 @@ public class Script96 {
 
     @Test
     public void testChangeText_sameActivity() {
+        //Uiautomator did not work -- so we need to click via pixel
+        try {
+            //
+            UiObject2 Allow = mDevice.wait(Until.findObject(By.res("com.android.permissioncontroller","permission_allow_always_button")),2000);
+            Allow.click();
 
-        UiObject2 Allow = mDevice.wait(Until.findObject(By.res("com.android.permissioncontroller","permission_allow_always_button")),2000);
-        Allow.click();
+            UiObject2 Close = mDevice.wait(Until.findObject(By.res("android","button3")),2000);
+            Close.click();
 
-        UiObject2 Close = mDevice.wait(Until.findObject(By.res("android","button3")),2000);
-        Close.click();
+            // Click right arrow
+            TimeUnit.SECONDS.sleep(2);
+            mDevice.click(83,97);
 
 
 
-        //mDevice.findObject(new UiSelector().description("Apps"))
-        //        .click();
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(139,1518);
+            TimeUnit.SECONDS.sleep(3);
+            mDevice.drag(100,1500,100,100,3);
+            mDevice.drag(100,1500,100,100,3);
 
-//        // Verify the test is displayed in the Ui
-//        UiObject2 changedText = mDevice
-//                .wait(Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "textToBeChanged")),
-//                        500 /* wait 500ms */);
-//        assertThat(changedText.getText(), is(equalTo(STRING_TO_BE_TYPED)));
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(512,1610);
+
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(494,255);
+
+            Allow = mDevice.wait(Until.findObject(By.res("com.android.permissioncontroller","permission_allow_button")),2000);
+            Allow.click();
+            TimeUnit.SECONDS.sleep(2);
+            mDevice.pressBack();
+            TimeUnit.SECONDS.sleep(3);
+            mDevice.pressBack();
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(83,97);
+
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(135,700);
+
+            TimeUnit.SECONDS.sleep(3);
+            mDevice.setOrientationRight();
+        } catch (InterruptedException | RemoteException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

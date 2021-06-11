@@ -88,10 +88,16 @@ public class Script151 {
         mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/next")).click();
         // click "->"
         mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/next")).click();
+        // click password
+        mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/text_password")).click();
         // type password
         mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/text_password")).setText("123");
+        // click confirm password
+        mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/text_password_confirm")).click();
         // confirm password
         mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/text_password_confirm")).setText("123");
+        //click back
+        mDevice.pressBack();
         // click "->"
         mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/next")).click();
         // click "tick"
@@ -99,6 +105,8 @@ public class Script151 {
 
         // press back button
         mDevice.pressBack();
+        // click password
+        mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/text_password")).click();
         // Type password
         mDevice.findObject(new UiSelector().resourceId("com.beemdevelopment.aegis:id/text_password")).setText("123");
         // click unlock

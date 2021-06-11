@@ -82,8 +82,16 @@ public class Script144 {
         try {
             mDevice.findObject(new UiSelector().resourceId("com.android.contacts:id/floating_action_button")).click();
             mDevice.findObject(new UiSelector().resourceId("com.android.contacts:id/left_button")).click();
+            //click
+            mDevice.findObject(new UiSelector().className("android.widget.EditText").index(0)).click();
             mDevice.findObject(new UiSelector().className("android.widget.EditText").index(0)).setText("john");
+            //click
+            mDevice.findObject(new UiSelector().className("android.widget.EditText").index(1)).click();
             mDevice.findObject(new UiSelector().className("android.widget.EditText").index(1)).setText("doe");
+            //click back
+            mDevice.pressBack();
+            //click
+            mDevice.findObject(new UiSelector().className("android.widget.EditText").text("Phone")).click();
             mDevice.findObject(new UiSelector().className("android.widget.EditText").text("Phone")).setText("5555555555");
             mDevice.findObject(new UiSelector().resourceId("com.android.contacts:id/editor_menu_save_button")).click();
         } catch (UiObjectNotFoundException e) {
@@ -112,6 +120,8 @@ public class Script144 {
         mDevice.findObject(new UiSelector().resourceId("android:id/button1")).click();
         // click "+" icon
         mDevice.findObject(new UiSelector().resourceId("com.moez.QKSMS:id/compose")).click();
+        // click search bar
+        mDevice.findObject(new UiSelector().className("android.widget.EditText").index(0)).click();
         // type text "jo"
         mDevice.findObject(new UiSelector().className("android.widget.EditText").index(0)).setText("jo");
         // click contact "john doe"

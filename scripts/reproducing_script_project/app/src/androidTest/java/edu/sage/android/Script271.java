@@ -30,6 +30,7 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import androidx.test.filters.SdkSuppress;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.Direction;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObject2;
@@ -85,28 +86,55 @@ public class Script271 {
 
     @Test
     public void testChangeText_sameActivity() {
-        UiObject2 Allow = mDevice.wait(Until.findObject(By.res("com.android.packageinstaller", "permission_allow_button")),2000);
-        Allow.click();
+        //Uiautomator did not work -- so we need to click via pixel
+        try {
+            // Click right arrow
+            mDevice.click(910,1684);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(131,826);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(910,1684);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(910,1684);
+            TimeUnit.SECONDS.sleep(2);
+            mDevice.click(910,1684);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(938,1458);
+            TimeUnit.SECONDS.sleep(2);
+            mDevice.click(285,1397);
+            TimeUnit.SECONDS.sleep(1);
+
+            mDevice.click(958,1526);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(958,1526);
 
 
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(706,1504);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(706,1504);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(706,1504);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(706,1504);
 
-        UiObject2 Plus = mDevice.wait(Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "fab_expand_menu_button")),2000);
-        Plus.click();
+            mDevice.pressBack();
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(195,1540);
+            mDevice.pressKeyCode(59);
+            mDevice.pressKeyCode(48);
 
-        //Incomplete
+            mDevice.pressKeyCode(33);
+            mDevice.pressKeyCode(47);
+            mDevice.pressKeyCode(48);
+            mDevice.pressBack();
 
+            mDevice.click(904,161);
 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-
-
-        //mDevice.findObject(new UiSelector().description("Apps"))
-        //        .click();
-
-//        // Verify the test is displayed in the Ui
-//        UiObject2 changedText = mDevice
-//                .wait(Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "textToBeChanged")),
-//                        500 /* wait 500ms */);
-//        assertThat(changedText.getText(), is(equalTo(STRING_TO_BE_TYPED)));
     }
 
     /**

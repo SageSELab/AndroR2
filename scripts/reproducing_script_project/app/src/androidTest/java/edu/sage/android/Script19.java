@@ -30,8 +30,10 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import androidx.test.filters.SdkSuppress;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.Direction;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObject2;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
@@ -49,50 +51,71 @@ import static org.junit.Assert.assertThat;
 @SdkSuppress(minSdkVersion = 18)
 public class Script19 {
 
-    private static final String PACKAGE_NAME
+    private static final String BASIC_SAMPLE_PACKAGE
             = "de.westnordost.streetcomplete";
-
+    private static final String AndroidOS = "com.android.packageinstaller";
     private static final int LAUNCH_TIMEOUT = 5000;
 
-    private static final String STRING_TO_TYPE = "test";
+    private static final String STRING_TO_BE_TYPED = "UiAutomator";
 
-    private UiDevice uiDevice;
+    private UiDevice mDevice;
 
     @Before
-    public void startActivityFromHomeScreen() {
+    public void startMainActivityFromHomeScreen() {
         // Initialize UiDevice instance
-        uiDevice = UiDevice.getInstance(getInstrumentation());
+        mDevice = UiDevice.getInstance(getInstrumentation());
 
         // Start from the home screen
-        uiDevice.pressHome();
+        mDevice.pressHome();
 
         // Wait for launcher
         final String launcherPackage = getLauncherPackageName();
         assertThat(launcherPackage, notNullValue());
-        uiDevice.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT);
+        mDevice.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT);
 
         // Launch the blueprint app
         Context context = getApplicationContext();
         final Intent intent = context.getPackageManager()
-                .getLaunchIntentForPackage(PACKAGE_NAME);
+                .getLaunchIntentForPackage(BASIC_SAMPLE_PACKAGE);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);    // Clear out any previous instances
         context.startActivity(intent);
 
         // Wait for the app to appear
-        uiDevice.wait(Until.hasObject(By.pkg(PACKAGE_NAME).depth(0)), LAUNCH_TIMEOUT);
+        mDevice.wait(Until.hasObject(By.pkg(BASIC_SAMPLE_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
     }
 
     @Test
-    public void performGUIActionsAndAssertions() throws UiObjectNotFoundException, InterruptedException {
-        // Perform setup GUI actions
-        // Press allow button
-//        uiDevice.findObject(new UiSelector().clickable(true).instance(1)).click();
+    public void testChangeText_sameActivity() {
+        //Uiautomator did not work -- so we need to click via pixel
+        try {
 
-        // Preform bug-specific GUI actions
-        // Select house number task
-//        TimeUnit.MILLISECONDS.sleep(5000);
-        uiDevice.findObject(new UiSelector().enabled(true).instance(12)).click();
-        
+            UiObject2 Allow = mDevice.wait(Until.findObject(By.res("com.android.packageinstaller","permission_allow_button")),2000);
+            Allow.click();
+
+            // Click right arrow
+            TimeUnit.SECONDS.sleep(20);
+            mDevice.click(401,562);
+
+
+
+            TimeUnit.SECONDS.sleep(3);
+            mDevice.click(532,1540);
+            TimeUnit.SECONDS.sleep(3);
+            mDevice.click(147,1193);
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(435,1702);
+            TimeUnit.SECONDS.sleep(1);
+
+            UiObject2 Toggle = mDevice.wait(Until.findObject(By.res("de.westnordost.streetcomplete","toggleKeyboard")),2000);
+            Toggle.click();
+            TimeUnit.SECONDS.sleep(1);
+            mDevice.click(105,1385);
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

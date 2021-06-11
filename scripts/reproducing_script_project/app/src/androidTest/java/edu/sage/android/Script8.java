@@ -86,6 +86,8 @@ public class Script8 {
         uiDevice.findObject(new UiSelector().className("android.widget.Button")).click();
         // Press create traveler option
         uiDevice.findObject(By.res(PACKAGE_NAME, "option_add_participant")).click();
+        // Press text box
+        uiDevice.findObject(new UiSelector().className("android.widget.EditText")).click();
         // Enter "t" in text box
         uiDevice.findObject(new UiSelector().className("android.widget.EditText")).legacySetText("t");
         // Press tick option
@@ -95,7 +97,8 @@ public class Script8 {
 
         // Bug-specific GUI actions
         // Long-press "t" item
-        uiDevice.findObject(By.res(PACKAGE_NAME, "participantTabRowView_output_participantName")).click(1000);
+        uiDevice.findObject(By.res(PACKAGE_NAME,
+                "participantTabRowView_output_participantName")).click(1000);
         // Drag to payment tab
         uiDevice.swipe(1000, 1000, 0, 1000, 10);
         // Drag to report tab

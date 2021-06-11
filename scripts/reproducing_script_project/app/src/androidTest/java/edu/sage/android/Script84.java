@@ -24,20 +24,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.wifi.WifiManager;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.Direction;
 import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObject2;
 import androidx.test.uiautomator.UiObjectNotFoundException;
-import androidx.test.uiautomator.UiScrollable;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
-
-import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -52,7 +51,7 @@ public class Script84 {
 
     private static final String BASIC_SAMPLE_PACKAGE
             = "org.moire.ultrasonic";
-
+    private static final String AndroidOS = "com.android.packageinstaller";
     private static final int LAUNCH_TIMEOUT = 5000;
 
     private static final String STRING_TO_BE_TYPED = "UiAutomator";
@@ -60,12 +59,13 @@ public class Script84 {
     private UiDevice mDevice;
 
     @Before
-    public void startMainActivityFromHomeScreen()  {
+    public void startMainActivityFromHomeScreen() {
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
 
         // Start from the home screen
         mDevice.pressHome();
+
         // Wait for launcher
         final String launcherPackage = getLauncherPackageName();
         assertThat(launcherPackage, notNullValue());
@@ -83,25 +83,25 @@ public class Script84 {
     }
 
     @Test
-    public void testChangeText_sameActivity() throws IOException, UiObjectNotFoundException {
-        mDevice.findObject(new UiSelector().text("OK")).click();
-        mDevice.findObject(new UiSelector().text("Add Server")).click();
-        mDevice.findObject(new UiSelector().text("Name")).click();
-        mDevice.findObject(new UiSelector().text("Unused")).click();
-        mDevice.findObject(new UiSelector().text("Unused")).setText("Steven Huang");
-        mDevice.findObject(new UiSelector().text("OK")).click();
-        mDevice.findObject(new UiSelector().text("Server Address")).click();
-        mDevice.findObject(new UiSelector().resourceId("android:id/edit")).setText("http://localhost:3000");
-        mDevice.findObject(new UiSelector().text("OK")).click();
-        mDevice.findObject(new UiSelector().text("Username")).click();
-        mDevice.findObject(new UiSelector().resourceId("android:id/edit")).setText("123456789");
-        mDevice.findObject(new UiSelector().text("OK")).click();
-        mDevice.findObject(new UiSelector().text("Password")).click();
-        mDevice.findObject(new UiSelector().resourceId("android:id/edit")).setText("123456789");
-        mDevice.findObject(new UiSelector().text("OK")).click();
-        UiScrollable appViews = new UiScrollable(new UiSelector().scrollable(true));
-        appViews.scrollIntoView(new UiSelector().text("Test Connection"));
-        mDevice.findObject(new UiSelector().text("Test Connection")).click();
+    public void testChangeText_sameActivity() {
+
+
+        UiObject2 Ok = mDevice.findObject(By.res("android","button1"));
+        Ok.click();
+        UiObject2 AddServer = mDevice.wait(Until.findObject(By.text("Add Server")),2000);
+        AddServer.click();
+
+        UiObject2 Address = mDevice.wait(Until.findObject(By.text("http://example.com")),2000);
+        Address.click();
+        UiObject2 Name = mDevice.wait(Until.findObject(By.text("Enabled")),2000);
+        Name.scroll(Direction.DOWN, 90, 100);
+        Name.scroll(Direction.DOWN, 90, 100);
+        Name.scroll(Direction.DOWN, 90, 100);
+        UiObject2 Test = mDevice.wait(Until.findObject(By.text("Test Connection")),2000);
+        Test.click();
+
+
+
 
     }
 

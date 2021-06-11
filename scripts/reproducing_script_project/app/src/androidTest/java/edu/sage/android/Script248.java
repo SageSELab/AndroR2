@@ -17,14 +17,16 @@
 package edu.sage.android;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Point;
+import android.os.RemoteException;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
@@ -33,16 +35,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
-import androidx.test.uiautomator.UiObject2;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Basic example for unbundled UiAutomator.
@@ -50,51 +52,67 @@ import static org.junit.Assert.assertThat;
 @RunWith(AndroidJUnit4.class)
 @SdkSuppress(minSdkVersion = 18)
 public class Script248 {
-    private static final String BASIC_SAMPLE_PACKAGE
-            = "org.odk.collect";
-    private static final String AndroidOS = "com.android.packageinstaller";
+
+    private static final String PACKAGE_NAME
+            = "org.odk.collect.android";
+
     private static final int LAUNCH_TIMEOUT = 5000;
 
     private static final String STRING_TO_BE_TYPED = "UiAutomator";
 
-    private UiDevice mDevice;
+    private UiDevice uiDevice;
 
     @Before
-    public void startMainActivityFromHomeScreen() {
+    public void startActivityFromHomeScreen() {
         // Initialize UiDevice instance
-        mDevice = UiDevice.getInstance(getInstrumentation());
+        uiDevice = UiDevice.getInstance(getInstrumentation());
 
         // Start from the home screen
-        mDevice.pressHome();
+        uiDevice.pressHome();
 
         // Wait for launcher
         final String launcherPackage = getLauncherPackageName();
         assertThat(launcherPackage, notNullValue());
-        mDevice.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT);
+        uiDevice.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT);
 
         // Launch the blueprint app
         Context context = getApplicationContext();
         final Intent intent = context.getPackageManager()
-                .getLaunchIntentForPackage(BASIC_SAMPLE_PACKAGE);
+                .getLaunchIntentForPackage(PACKAGE_NAME);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);    // Clear out any previous instances
         context.startActivity(intent);
 
         // Wait for the app to appear
-        mDevice.wait(Until.hasObject(By.pkg(BASIC_SAMPLE_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
+        uiDevice.wait(Until.hasObject(By.pkg(PACKAGE_NAME).depth(0)), LAUNCH_TIMEOUT);
     }
 
     @Test
-    public void testChangeText_sameActivity() {
-        //Incomplete
+    public void performGUIActionsAndAssertions()
+            throws UiObjectNotFoundException, RemoteException, InterruptedException {
+        // Setup GUI actions
+        // Press ALLOW button
+        uiDevice.findObject(new UiSelector().clickable(true).instance(1)).click();
+        TimeUnit.MILLISECONDS.sleep(3000);
 
-        //mDevice.findObject(new UiSelector().description("Apps"))
-        //        .click();
+        // Bug-specific GUI actions
+        // Press menu option
+        uiDevice.pressMenu();
+        // Press Admin Settings option
+        uiDevice.findObject(new UiSelector().clickable(true).instance(2)).click();
+        // Press User Settings option
+        uiDevice.findObject(new UiSelector().clickable(true).instance(5)).click();
+        // Uncheck Server checkbox
+        uiDevice.findObject(new UiSelector().checkable(true)).click();
+        // Press back button
+        uiDevice.pressBack();
+        // Press General Settings option
+        uiDevice.findObject(new UiSelector().clickable(true)).click();
+        // Press Server option
+        uiDevice.findObject(new UiSelector().clickable(true)).click();
 
-//        // Verify the test is displayed in the Ui
-//        UiObject2 changedText = mDevice
-//                .wait(Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "textToBeChanged")),
-//                        500 /* wait 500ms */);
-//        assertThat(changedText.getText(), is(equalTo(STRING_TO_BE_TYPED)));
+        // Assertions
+        // Assert "Type" does not exist
+        assertFalse(uiDevice.findObject(new UiSelector().className("android.widget.TextView").instance(1)).getText().equals("Type"));
     }
 
     /**

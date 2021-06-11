@@ -91,6 +91,8 @@ public class Script22 {
         uiDevice.findObject(new UiSelector().clickable(true).instance(1)).click();
         // Press add activity option
         uiDevice.findObject(new UiSelector().clickable(true)).click();
+        // Press text box
+        uiDevice.findObject(new UiSelector().clickable(true)).click();
         // Type "test" in text box
         uiDevice.findObject(new UiSelector().clickable(true)).setText(STRING_TO_TYPE);
         // Press add activity button
